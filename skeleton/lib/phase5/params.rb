@@ -8,12 +8,15 @@ module Phase5
     # 3. route params
     def initialize(req, route_params = {})
       @params = route_params
-      parse_www_encoded_form(req.query_string)
-      parse_www_encoded_form(req.body)
+      query_hash = parse_www_encoded_form(req.query_string)
+      body_hash = parse_www_encoded_form(req.body)
+
+      @params.merge!(query_hash) unless query_hash.nil?
+      @params.merge!(body_hash) unless body_hash.nil?
     end
 
     def [](key)
-      @params[key]
+      @params[key.to_s]
     end
 
     def to_s

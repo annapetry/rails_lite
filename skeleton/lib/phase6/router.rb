@@ -21,8 +21,14 @@ module Phase6
     def run(req, res)
       matches = pattern.match(req.path)
 
+      match_hash = {}
+
+      matches.names.each do |name|
+        match_hash[name] = matches[name]
+      end
+
       controller_class
-        .new(req, res, matches = {})
+        .new(req, res, match_hash)
         .invoke_action(action_name)
     end
   end
